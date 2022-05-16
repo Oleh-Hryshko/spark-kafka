@@ -1,7 +1,19 @@
 package com.epam.hryshko
 
+import org.apache.commons.codec.StringDecoder
 import org.apache.spark.sql.SparkSession
+
 import scala.io.Source
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.spark.sql.catalyst.expressions.StringDecode
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.streaming.Durations
+import org.apache.spark.streaming.api.java.JavaDStream
+import org.apache.spark.streaming.api.java.JavaInputDStream
+import org.apache.spark.streaming.api.java.JavaStreamingContext
+import org.apache.spark.streaming.kafka010.ConsumerStrategies
+import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.LocationStrategies;
 
 object Consumer {
   def main(args: Array[String]) = {
@@ -13,11 +25,12 @@ object Consumer {
     censored.close()
 
 
+
+
     val spark = SparkSession
       .builder
       .appName("Spark-Kafka-Integration")
-      .master("local")
-//      .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.13:3.2.1")
+      .master("local[*]")
       .getOrCreate()
 
 
@@ -25,6 +38,7 @@ object Consumer {
 //      .builder
 //      .appName("Spark-Kafka-Integration")
 //      .master("local")
+//      .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.13:3.2.1")
 //      .getOrCreate()
 
     val df = spark.readStream
@@ -38,17 +52,7 @@ object Consumer {
 
 
 
-/*    val windowDuration = null
 
-    val sc = new StreamingContext(arrHostPort.mkString(", "), "Spark-Kafka-Integration", Seconds(2))
-    val sparkContext = sc.sparkContext
-    sparkContext.setLogLevel("ERROR")
-
-    val kafkaParams = Map("metadata.broker.list" -> arrHostPort.mkString(", "))
-    val topics = List(Constants.TOPIC).toSet
-    //val lines =
-
-    */
   }
 
 }
