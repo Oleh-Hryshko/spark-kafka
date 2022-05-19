@@ -1,9 +1,11 @@
 package com.epam.hryshko
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
+
 import java.util.Properties
 import scala.io.Source
 import scala.util.Random
+import scala.util.control.Breaks.break
 
 object Producer {
 
@@ -29,30 +31,45 @@ object Producer {
     var time = System.currentTimeMillis()
     val producer = createKafkaProducer(arrHostPort.mkString(", "))
     val rnd = new Random()
+    val numberOfMessages = 10
+    var i = 1
 
-    for (counter <- arrSpeakers.indices){
-      time += 1000
-      val timestamp = new java.sql.Timestamp(time).toString
-      val speaker = arrSpeakers(rnd.nextInt(arrSpeakers.length - 1))
-      val word = arrWord(rnd.nextInt(arrWord.length - 1))
+    while (true) {
 
-      val message = "{" +
-        "\n\t \"speaker\": \"" + speaker + "\"," +
-        "\n\t \"time\": \"" + timestamp  + "\"," +
-        "\n\t \"word\": \"" + word  + "\"" +
-        "\n} "
+      for (counter <- arrSpeakers.indices) {
+        time += 1000
+        val timestamp = new java.sql.Timestamp(time).toString
+        val speaker = arrSpeakers(rnd.nextInt(arrSpeakers.length - 1))
+        val word = arrWord(rnd.nextInt(arrWord.length - 1))
 
-      //val record = new ProducerRecord[String, String](topic, message)
-      val record = new ProducerRecord[String, String](topic, null, time, speaker, message, null)
+        val message = "{" +
+          "\n\t \"speaker\": \"" + speaker + "\"," +
+          "\n\t \"time\": \"" + timestamp + "\"," +
+          "\n\t \"word\": \"" + word + "\"" +
+          "\n} "
+
+        //      val message = "{" +
+        //        "\"speaker\": \"" + speaker + "\", " +
+        //        "\"time\": \"" + timestamp + "\", " +
+        //        "\"word\": \"" + word + "\"" +
+        //        "}"
+
+        //val record = new ProducerRecord[String, String](topic, message)
+        val record = new ProducerRecord[String, String](topic, null, time, speaker, message, null)
 
 
-      try {
-        producer.send(record)
-        println(message)
-      } catch {
-        case ex: Error => {
-          println(ex + ":" + speaker + " " + timestamp + " " + topic + " " + word)
+        try {
+          producer.send(record)
+          println(message)
+        } catch {
+          case ex: Error => {
+            println(ex + ":" + speaker + " " + timestamp + " " + topic + " " + word)
+          }
         }
+      }
+      i += 1
+      if (i >= numberOfMessages) {
+        break
       }
     }
     producer.close()
