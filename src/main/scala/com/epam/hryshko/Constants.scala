@@ -7,4 +7,5 @@ object Constants {
   val SPEAKERS: String = INPUT_DIR + "speakers.txt"
   val DICTIONARY: String = INPUT_DIR + "dictionary.txt"
   val CENSORED: String = INPUT_DIR + "censored.txt"
+  val WINDOW_DURATION: Int = 60
 }

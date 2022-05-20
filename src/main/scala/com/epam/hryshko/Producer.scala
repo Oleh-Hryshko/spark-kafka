@@ -10,6 +10,7 @@ import scala.util.control.Breaks.break
 object Producer {
 
   def main(args: Array[String]) = {
+
     var arrHostPort: Array[String] = Array(Constants.HOST_PORT)
 
     val speakers = Source.fromFile(Constants.SPEAKERS)
@@ -47,12 +48,6 @@ object Producer {
           "\n\t \"time\": \"" + timestamp + "\"," +
           "\n\t \"word\": \"" + word + "\"" +
           "\n} "
-
-        //      val message = "{" +
-        //        "\"speaker\": \"" + speaker + "\", " +
-        //        "\"time\": \"" + timestamp + "\", " +
-        //        "\"word\": \"" + word + "\"" +
-        //        "}"
 
         //val record = new ProducerRecord[String, String](topic, message)
         val record = new ProducerRecord[String, String](topic, null, time, speaker, message, null)

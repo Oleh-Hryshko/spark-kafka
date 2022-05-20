@@ -1,5 +1,10 @@
-spiker1
-spiker2
-spiker3
-spiker4
-spiker5
+speaker0
+speaker1
+speaker2
+speaker3
+speaker4
+speaker5
+speaker6
+speaker7
+speaker8
+speaker9
