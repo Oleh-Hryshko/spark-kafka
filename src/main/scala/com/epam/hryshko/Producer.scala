@@ -9,9 +9,9 @@ import scala.util.control.Breaks.break
 
 object Producer {
 
-  def main(args: Array[String]) = {
+  def main(args: Array[String]):Unit = {
 
-    var arrHostPort: Array[String] = Array(Constants.HOST_PORT)
+    val arrHostPort: Array[String] = Array(Constants.HOST_PORT)
 
     val speakers = Source.fromFile(Constants.SPEAKERS)
     var arrSpeakers: Array[String] = Array()
@@ -27,7 +27,7 @@ object Producer {
 
   }
 
-  def sendMessages(arrHostPort: Array[String], topic: String, arrSpeakers: Array[String], arrWord: Array[String]) {
+  def sendMessages(arrHostPort: Array[String], topic: String, arrSpeakers: Array[String], arrWord: Array[String]): Unit = {
 
     var time = System.currentTimeMillis()
     val producer = createKafkaProducer(arrHostPort.mkString(", "))
@@ -37,7 +37,7 @@ object Producer {
 
     while (true) {
 
-      for (counter <- arrSpeakers.indices) {
+      for (_ <- arrSpeakers.indices) {
         time += 1000
         val timestamp = new java.sql.Timestamp(time).toString
         val speaker = arrSpeakers(rnd.nextInt(arrSpeakers.length - 1))
@@ -57,9 +57,8 @@ object Producer {
           producer.send(record)
           println(message)
         } catch {
-          case ex: Error => {
+          case ex: Error =>
             println(ex + ":" + speaker + " " + timestamp + " " + topic + " " + word)
-          }
         }
       }
       i += 1

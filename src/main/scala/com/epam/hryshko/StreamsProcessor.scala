@@ -6,6 +6,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.{DataTypes, StructType}
 
+import java.nio.file.Paths
 import scala.io.Source
 
 object StreamsProcessor {
@@ -34,11 +35,11 @@ class StreamsProcessor(brokers: String, kafkaTopic: String, pathToTheCensored: S
 
   def process(): Unit = {
 
-    System.setProperty("hadoop.home.dir", "c:\\winutil")
 //    val OS: String = System.getProperty("os.name").toLowerCase
 //
 //    if (OS.contains("win")) System.setProperty("hadoop.home.dir", Paths.get("winutil").toAbsolutePath.toString)
-//    else System.setProperty("hadoop.home.dir", "/")
+//    else System.setProperty("hadoop.home.dir", "c:\\winutil")
+    System.setProperty("hadoop.home.dir", "c:\\winutil")
 
     val censored = Source.fromFile(pathToTheCensored)
     var arrCensored: Array[String] = Array()
